@@ -1,6 +1,9 @@
 package web.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @Entity
@@ -13,12 +16,21 @@ public class User {
     private Long id;
 
     @Column(name = "name")
+    @NotEmpty(message = "Name shouldn't be empty")
+    @Pattern(message = "Name should be formed like this: Xxxxx",
+            regexp = "[A-Z]{1}[a-z]{1,23}")
     private String firstName;
 
     @Column(name = "last_name")
+    @NotEmpty(message = "Last name shouldn't be empty")
+    @Pattern(message = "Last name should be formed like this: Xxxxx",
+            regexp = "[A-Z]{1}[a-z]{1,23}")
     private String lastName;
 
     @Column(name = "email")
+    @NotEmpty(message = "Email shouldn't be empty")
+    @Email(message = "Email should be valid",
+            regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\\.[a-zA-Z]+$")
     private String email;
 
     public User() {
@@ -75,5 +87,15 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, email);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
